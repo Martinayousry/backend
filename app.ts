@@ -1,26 +1,18 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import express,{Request,Response} from 'express';
+import dotenv from 'dotenv';'./config/database';
+import connectToDatabase from './config/database';
+import mountRoute from './routes/index';
 dotenv.config();
 
 const app: express.Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+connectToDatabase();
+mountRoute(app);
 
-const port = process.env.PORT
-const dbConnectionString = process.env.DB!;
 
-app.get('/', (req, res) => {
-  res.sendFile('./views/index.html', { root: __dirname });
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running at http://localhost:${process.env.PORT}/`);
 });
 
-mongoose
-  .connect(dbConnectionString)
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}/`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB:', err);
-  });
+
