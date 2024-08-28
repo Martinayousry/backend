@@ -1,28 +1,19 @@
-import {Request,Response, NextFunction } from "express";
-import asyncHandler from "express-async-handler";
+
 import { ISubCategory } from "../interfaces/subCategories";
 import subCategoryModel from "../models/subCategoryModel";
+import { createOneDocument, deleteDocument, getDocument, getDocuments, updateDocument } from "./apiHandler";
+import { FilterData } from "../interfaces/filterData";
+import {Request,Response, NextFunction } from "express";
 
-export const createSubCategory=asyncHandler(async(req:Request,res:Response,next:NextFunction) => {
-  const subCategory:ISubCategory=await subCategoryModel.create(req.body);
-  res.status(201).json({data: subCategory});
-})
-export const getSubCategories=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-    const subCategory=await subCategoryModel.find();
-    res.status(201).json({data: subCategory});
+export const filterData = (req: Request, res: Response, next: NextFunction) => {
+  let filterData: FilterData = {};
+  if (req.params.categoryId) { filterData.category = req.params.categoryId };
+  req.filterData = filterData;
+  next();
+} 
 
-})
-export const getSubCategory=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-    const subCategory=await subCategoryModel.findById(req.params.id);
-    res.status(200).json({data: subCategory});
-
-})
-export const updateSubCategory=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-const subCategory=await subCategoryModel.findByIdAndUpdate(req.params.id,req.body,{new:true});
-res.status(200).json({data: subCategory});
-})
-export const deleteSubCategory =asyncHandler(async(req:Request,res:Response,next:NextFunction) => {
-  const subCategory =await subCategoryModel.findByIdAndDelete(req.params.id);
-  res.status(204).json();
-}
-)
+export const createSubCategory = createOneDocument<ISubCategory>(subCategoryModel);
+export const getSubCategories = getDocuments<ISubCategory>(subCategoryModel, 'category');
+export const getSubCategory = getDocument<ISubCategory>(subCategoryModel);
+export const updateSubCategory = updateDocument<ISubCategory>(subCategoryModel);
+export const deleteSubCategory = deleteDocument<ISubCategory>(subCategoryModel);

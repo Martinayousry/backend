@@ -1,3 +1,4 @@
+import * as all from "../interfaces";
 import { Application,Request,Response,NextFunction } from "express";
 import subCategoryRoute from "./subCategoryRoute";
 import categoryRoute from "./categoryRoute";

@@ -1,27 +1,12 @@
-import {Request,Response, NextFunction } from "express";
+
 import categoryModel from "../models/categoryModel";
 import { ICategory } from "../interfaces/category";
-import asyncHandler from "express-async-handler";
-export const createCategory=asyncHandler(async(req:Request,res:Response,next:NextFunction) => {
-  const category:ICategory=await categoryModel.create(req.body);
-  res.status(201).json({data: category});
-})
-export const getCategories=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-    const category=await categoryModel.find();
-    res.status(201).json({data: category});
+import { createOneDocument, deleteDocument, getDocument, getDocuments, updateDocument } from "./apiHandler";
 
-})
-export const getCategory=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-    const category=await categoryModel.findById(req.params.id);
-    res.status(200).json({data: category});
+export const createCategory = createOneDocument<ICategory>(categoryModel);
+export const getCategories = getDocuments<ICategory>(categoryModel, 'category');
+export const getCategory = getDocument<ICategory>(categoryModel);
+export const updateCategory = updateDocument<ICategory>(categoryModel);
+export const deleteCategory = deleteDocument<ICategory>(categoryModel);
 
-})
-export const updateCategory=asyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-const category=await categoryModel.findByIdAndUpdate(req.params.id,req.body,{new:true});
-res.status(200).json({data: category});
-})
-export const deleteCategory =asyncHandler(async(req:Request,res:Response,next:NextFunction) => {
-  const category=await categoryModel.findByIdAndDelete(req.params.id);
-  res.status(204).json();
-}
-)
+
