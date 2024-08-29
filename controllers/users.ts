@@ -1,3 +1,4 @@
+import  bcrypt  from 'bcryptjs';
 import { Request, Response, NextFunction } from "express";
 import { IUsers } from "../interfaces/users";
 import { createOneDocument, deleteDocument, getDocuments, getDocument } from "./apiHandler";
@@ -35,7 +36,7 @@ export const resizeUserImage = asyncHandler(async (req, res, next) => {
 });
 export const changeUserPassword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const user = await usersModel.findByIdAndUpdate(req.params.id, {
-    // password: await bcrypt.hash(req.body.password, 13),
+    password: await bcrypt.hash(req.body.password, 13),
     passwordChangedAt: Date.now()
   }, { new: true })
   if (!user) { return next(new apiErrors('user not found', 404)) }

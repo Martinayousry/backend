@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IUsers } from "../interfaces/users";
-// import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 const usersSchema: Schema = new Schema<IUsers>({
   name: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true },
