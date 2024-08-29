@@ -1,10 +1,11 @@
 import { Schema, model } from "mongoose";
-import { Products } from "../interfaces/products";
+import { IProducts } from "../interfaces/products";
 
 
-const productsSchema: Schema = new Schema<Products>({
 
-  name: { type: String, trim: true,required: true, unique: true },
+const productsSchema: Schema = new Schema<IProducts>({
+
+  name: { type: String, trim: true,required: true},
   price: { type: Number, required: true, min: 1, max: 1000000 },
   description: { type: String, required: true, trim: true, minlength: 10, maxlength: 500 },
   priceAfterDiscount: { type: Number, min: 1, max: 1000000 },
@@ -18,10 +19,10 @@ const productsSchema: Schema = new Schema<Products>({
   subcategory: { type: Schema.Types.ObjectId, required: true, ref: 'subcategories' }
 }, { timestamps: true });
 
-productsSchema.pre<Products>(/^find/, function (next) {
+productsSchema.pre<IProducts>(/^find/, function (next) {
   this.populate({ path: 'category', select: 'name' })
   this.populate({ path: 'subcategory', select: 'name' })
   next()
 })
 
-export default model<Products>('products', productsSchema)
+export default model<IProducts>('products', productsSchema)

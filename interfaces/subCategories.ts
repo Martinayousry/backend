@@ -1,5 +1,6 @@
 import {Document, Schema} from 'mongoose'
+import { ICategory } from './category';
 export interface ISubCategory extends Document {
     name: string;
-    category:Schema.Types.ObjectId;
+    category: ICategory
 }

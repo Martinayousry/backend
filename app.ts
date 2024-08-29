@@ -8,6 +8,7 @@ dotenv.config();
 const app: express.Application = express();
 let server: Server;
 app.use(express.json());
+app.use(express.static('uploads'))
 app.use(express.urlencoded({ extended: true }));
 connectToDatabase();
 mountRoute(app);

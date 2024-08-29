@@ -13,10 +13,10 @@ export const createOneDocument = <modelType>(model: mongoose.Model<any>) => asyn
     res.status(201).json({ data: document });
   })
 export const getDocuments = <modelType>(model: mongoose.Model<any>, modelName: string) => asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    let dataFilter: FilterData = {};
+    let filterData: FilterData = {};
     let searchLength: number = 0;
     if (req.filterData) {
-        dataFilter= req.filterData
+        filterData= req.filterData
     }
     if (req.query) {
       const searchResult: Features = new Features(model.find(filterData), req.query).filter().search(modelName)
