@@ -8,7 +8,7 @@ export interface IUsers extends Document {
   role: Role;
   active: boolean;
   passwordChangedAt: Date | number;
-  resetCode: string;
-  resetCodeExpireTime: Date | number;
-  resetCodeVerify: boolean
+  resetCode: string |undefined;
+  resetCodeExpireTime: Date | number|undefined;
+  resetCodeVerify: boolean|undefined;
 }

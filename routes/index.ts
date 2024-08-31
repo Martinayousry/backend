@@ -6,6 +6,7 @@ import apiErrors from "../utils/apiErros";
 import globalErr from "../middleware/globalErr";
 import productsRoute from "./productsRoute";
 import usersRoute from "./usersRoute";
+import authRoute from "./authRoute";
 
 
 const mountRoute=( app:Application ):void=>{
@@ -13,6 +14,7 @@ app.use("/api/v1/categories",categoryRoute);
 app.use("/api/v1/subCategories",subCategoryRoute);
 app.use("/api/v1/products",productsRoute);
 app.use('/api/v1/users', usersRoute);
+app.use('/api/v1/auth', authRoute);
 app.all('*',(req:Request,res:Response,next:NextFunction)=>{
 next(new apiErrors(`the route ${req.originalUrl} is not found`,400))
 })
