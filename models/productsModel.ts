@@ -11,12 +11,12 @@ const productsSchema: Schema = new Schema<IProducts>({
   priceAfterDiscount: { type: Number, min: 1, max: 1000000 },
   quantity: { type: Number, default: 0, min: 0 },
   sold: { type: Number, default: 0 },
-  ratingAverage: { type: Number, min: 0, max: 5, default: 0 },
+  ratingAverage: { type: Number, min: 0,default:1},
   ratingCount: { type: Number, default: 0 },
   cover: String,
   images: [String],
   category: { type: Schema.Types.ObjectId, required: true, ref: 'categories' },
-  subcategory: { type: Schema.Types.ObjectId, required: true, ref: 'subcategories' }
+  subcategory: { type: Schema.Types.ObjectId, required: true, ref: 'subCategories' }
 }, { timestamps: true });
 
 productsSchema.pre<IProducts>(/^find/, function (next) {

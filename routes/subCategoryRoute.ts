@@ -1,4 +1,4 @@
-import { filterData } from './../controllers/subCategory';
+import { filterData, setCategoryId } from './../controllers/subCategory';
 import {
   createSubCategory,
   deleteSubCategory,
@@ -21,7 +21,7 @@ const subCategoryRoute: Router = Router({mergeParams:true});
 subCategoryRoute
   .route("/")
   .get(filterData,getSubCategories)
-  .post(protectRoutes,checkActive,allowedTo('manager','admin'),createSubcategoryValidator, createSubCategory);
+  .post(protectRoutes,checkActive,allowedTo('manager','admin'),setCategoryId,createSubcategoryValidator, createSubCategory);
 subCategoryRoute
   .route("/:id")
   .get(getSubCategoryValidator, getSubCategory)

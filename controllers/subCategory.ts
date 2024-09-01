@@ -11,6 +11,10 @@ export const filterData = (req: Request, res: Response, next: NextFunction) => {
   req.filterData = filterData;
   next();
 } 
+export const setCategoryId = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.body.category) { req.body.category = req.params.categoryId };
+  next();
+};
 
 export const createSubCategory = createOneDocument<ISubCategory>(subCategoryModel);
 export const getSubCategories = getDocuments<ISubCategory>(subCategoryModel, 'category');
