@@ -31,24 +31,27 @@ export const getDocuments = <modelType>(model: mongoose.Model<any>, modelName: s
   
     res.status(200).json({ length: documents.length, pagination: paginationResult, data: documents })
   })
-export const getDocument = <modelType>(model: mongoose.Model<any>) => asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const document = await model.findById(req.params.id);
+export const getDocument = <modelType>(model: mongoose.Model<any>,population?:string) => asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  let query = model.findById(req.params.id);
+  if (population) { query = query.populate(population) };
+  const document = await query;
     if (!document) {
-      return next(new apiErrors('Document not found', 404))
+      return next(new apiErrors(`${req.__('not_found')}`, 404))
     }
     res.status(200).json({ data: document });
   })
   export const updateDocument = <modelType>(model: mongoose.Model<any>) => asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const document = await model.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!document) {
-      return next(new apiErrors('Document not found', 404))
+      return next(new apiErrors(`${req.__('not_found')}`, 404))
     }
+    document.save();
     res.status(200).json({ data: document });
   })
   export const deleteDocument = <modelType>(model: mongoose.Model<any>) => asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const document = await model.findByIdAndDelete(req.params.id);
     if (!document) {
-      return next(new apiErrors('Document not found', 404))
+      return next(new apiErrors(`${req.__('not_found')}`, 404))
     }
     res.status(204).json({ data: document });
   })

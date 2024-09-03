@@ -39,6 +39,6 @@ export const resizeImages = asyncHandler(async (req: Request, res: Response, nex
 
 export const createProduct = createOneDocument<IProducts>(productsModel);
 export const getProducts = getDocuments<IProducts>(productsModel, 'products');
-export const getProduct = getDocument<IProducts>(productsModel);
+export const getProduct = getDocument<IProducts>(productsModel,'reviews');
 export const updateProduct = updateDocument<IProducts>(productsModel);
 export const deleteProduct = deleteDocument<IProducts>(productsModel);

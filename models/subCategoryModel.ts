@@ -7,7 +7,6 @@ const SubCategorySchema:Schema = new Schema<ISubCategory>({
     name: {
         type: String,
         required: true,
-        unique: true,
         trim:true
     },
     category:{type:Schema.Types.ObjectId,required:true,ref:"categories"}
