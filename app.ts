@@ -15,8 +15,7 @@ const app: express.Application = express();
 let server: Server;
 dotenv.config();
 app.use(express.json({limit:'10kb'}));
-app.use(express.urlencoded({ extended: true }));
-// app.use(compression)
+app.use(compression())
 app.use(cors({
   origin: ['http://localhost:4200'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],

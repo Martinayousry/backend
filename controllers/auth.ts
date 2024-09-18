@@ -12,7 +12,7 @@ import sendMail from '../utils/sendMail';
 
 export const signup = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const user: IUsers = await usersModel.create(req.body);
-    const token = createToken(user._id);
+    const token = createToken(user._id,user.role);
     res.status(201).json({ token, data: user })
   });
   
@@ -21,7 +21,7 @@ export const signup = asyncHandler(async (req: Request, res: Response, next: Nex
     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
       return next(new apiErrors('Invalid email or password', 401));
     }
-    const token = createToken(user._id);
+    const token = createToken(user._id,user.role);
     res.status(200).json({ token, message: 'logged in successfully' });
   });
   export const protectRoutes = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -37,7 +37,7 @@ export const signup = asyncHandler(async (req: Request, res: Response, next: Nex
     if (!currentUser) { return next(new apiErrors("user doesn't exist", 401)) }
     //check if password changed
     if (currentUser.passwordChangedAt instanceof Date) {
-      const changedPasswordTime: number = (currentUser.passwordChangedAt.getTime() / 1000);
+      const changedPasswordTime: number = parseInt((currentUser.passwordChangedAt.getTime() / 1000).toString());
       if (changedPasswordTime > decodedToken.iat) { return next(new apiErrors('please login again', 401)) }
     }
     req.user = currentUser;
@@ -112,7 +112,7 @@ export const signup = asyncHandler(async (req: Request, res: Response, next: Nex
     user.resetCodeVerify = undefined;
     user.passwordChangedAt = Date.now();
     await user.save({ validateModifiedOnly: true });
-    res.status(200).json({message:'your password has been changed'});
+    res.status(200).json({ message: 'your password has been changed' });
   });
   
   

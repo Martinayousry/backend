@@ -40,7 +40,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response, next
   const order: Orders = await ordersModel.create({
     user: req.user?._id,
     totalPrice: totalOrderPrice,
-    address: req.body.address,
+    address: req.body.address || 'cairo,egypt',
     cartItems: cart.cartItems,
     taxPrice
   })

@@ -29,8 +29,19 @@ reviewsSchema.statics.calcRatingAndQuantity = async function (productId) {
 
 reviewsSchema.post<Reviews>('save', async function () { await (this.constructor as any).calcRatingAndQuantity(this.product) })
 
+reviewsSchema.post<Reviews>('findOneAndDelete', async function (doc) {
+  const reviewDoc = doc as unknown as Reviews;
+  if (reviewDoc.product) {
+    await (reviewDoc.constructor as any).calcRatingAndQuantity(reviewDoc.product);
+  }
+})
+
 reviewsSchema.pre<Reviews>(/^find/, function (next) {
   this.populate({ path: 'user', select: 'name image' })
+  next()
+})
+reviewsSchema.pre<Reviews>('find', function (next) {
+  this.populate({ path: 'product', select: 'name cover' })
   next()
 })
 
